@@ -17,7 +17,7 @@ class PlInputMask extends PlElement {
             mask: { value: () => null, observer: '_maskObserver' },
             type: { value: () => "pattern" },
             unmasked: { type: String, value: () => null },
-            blocks: { value: () => null }
+            blocks: { value: () => [] }
         }
     }
 
@@ -79,6 +79,7 @@ class PlInputMask extends PlElement {
     }
 
     _maskObserver(val) {
+        this._imask.updateOptions({ lazy: true });
         this._imask.updateOptions(this._compileMask());
     }
 }
