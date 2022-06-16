@@ -16,8 +16,7 @@ class PlInputMask extends PlElement {
         return {
             mask: { value: () => null, observer: '_maskObserver' },
             type: { value: () => "pattern" },
-            unmasked: { type: String, value: () => null },
-            blocks: { value: () => [] }
+            unmasked: { type: String, value: () => null }
         }
     }
 
@@ -53,6 +52,7 @@ class PlInputMask extends PlElement {
 
     _compileMask() {
         let mask = '';
+        let pattern;
         switch (this.type) {
             case 'pattern': {
                 mask = this.mask;
@@ -65,7 +65,8 @@ class PlInputMask extends PlElement {
             }
 
             case 'date': {
-                mask = Date;
+                mask = this.mask;
+                pattern = 'DD{.}`MM{.}`YYYY HH:mm'
                 break;
             }
         }
@@ -74,13 +75,82 @@ class PlInputMask extends PlElement {
             placeholderChar: '_',
             lazy: false,
             overwrite: true,
-            blocks: this.blocks
+            pattern,
+            blocks: this._blocks,
         };
     }
 
     _maskObserver(val) {
         this._imask.updateOptions({ lazy: true });
         this._imask.updateOptions(this._compileMask());
+    }
+    /**
+     * Объект, содержащий токены, которые могут быть использованы при формировании масок ввода.
+     * @type {Object}
+     * @private
+     */
+    get _blocks() {
+        return {
+            DD: {
+                mask: IMask.MaskedRange,
+                from: 1,
+                to: 31,
+                maxLength: 2
+            },
+            MM: {
+                mask: IMask.MaskedRange,
+                from: 1,
+                to: 12,
+                maxLength: 2
+            },
+            YYYY: {
+                mask: IMask.MaskedRange,
+                from: this.minYear ?? 1000,
+                to: this.maxYear ?? 3000,
+                maxLength: 4
+            },
+            HH: {
+                mask: IMask.MaskedRange,
+                from: 0,
+                to: 23,
+                maxLength: 2
+            },
+            mm: {
+                mask: IMask.MaskedRange,
+                from: 0,
+                to: 59,
+                maxLength: 2
+            },
+            ss: {
+                mask: IMask.MaskedRange,
+                from: 0,
+                to: 59
+            },
+            N: {
+                mask: IMask.MaskedNumber,
+                radix: this.radix,
+                thousandsSeparator: this.thousandsSeparator,
+                mapToRadix: this._mapToRadixArray,
+                min: this.min,
+                max: this.max,
+                scale: this.scale,
+                signed: this.signed,
+                normalizeZeros: !this.notNormalizeZeros,
+                padFractionalZeros: this.padFractionalZeros
+            },
+            // В отличие от числовой маски, маска диапазона имеет фиксированный размер,
+            // принимает только целочисленные значения, но может использовать placeholder.
+            NR: {
+                mask: IMask.MaskedRange,
+                from: this.from,
+                to: this.to,
+                overwrite: this.overwrite,
+                thousandsSeparator: this.thousandsSeparator,
+                signed: this.signed,
+                normalizeZeros: !this.notNormalizeZeros,
+                padFractionalZeros: this.padFractionalZeros
+            }
+        };
     }
 }
 
