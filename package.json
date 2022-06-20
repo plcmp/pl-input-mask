@@ -1,6 +1,6 @@
 {
     "name": "@plcmp/pl-input-mask",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Simple mask for inputs.",
     "main": "pl-input-mask.js",
     "repository": {
