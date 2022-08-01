@@ -22,8 +22,7 @@ class PlInputMask extends PlElement {
 
     connectedCallback() {
         super.connectedCallback();
-        this._input = this.parentElement._nativeInput;
-        this._imask = new IMask(new ShadowHTMLMaskElement(this._input), this._compileMask());
+        this._imask = new IMask(new ShadowHTMLMaskElement(this.parentElement.$.nativeInput), this._compileMask());
         this.parentNode.addEventListener('value-changed', this.inputValChanged.bind(this));
         this.parentElement.validators.push(this.validator.bind(this));
     }
