@@ -16,7 +16,13 @@ class PlInputMask extends PlElement {
         return {
             mask: { value: () => null, observer: '_maskObserver' },
             type: { value: () => "pattern" },
-            unmasked: { type: String, value: () => null }
+            unmasked: { type: String, value: () => null },
+            scale: { value: undefined },
+            thousandsSeparator: { value: '' },
+            radix: { value: '.' },
+            mapToRadix: { value: ['.', ','] },
+            min: { value: undefined },
+            max: { value: undefined }
         }
     }
 
@@ -28,9 +34,10 @@ class PlInputMask extends PlElement {
     }
 
     inputValChanged(val) {
-        this._imask.updateValue();
+        if(!val.detail.value) {
+            this._imask.updateValue();
+        }
         this._imask.updateControl();
-
         this.unmasked = this._imask.masked.unmaskedValue;
         this.parentNode.validate();
     }
@@ -68,6 +75,11 @@ class PlInputMask extends PlElement {
                 pattern = 'DD{.}`MM{.}`YYYY HH:mm'
                 break;
             }
+
+            case 'number': {
+                mask = Number
+                break;
+            }
         }
         return {
             mask: mask || /^.*$/,
@@ -76,6 +88,10 @@ class PlInputMask extends PlElement {
             overwrite: true,
             pattern,
             blocks: this._blocks,
+            scale: this.scale,
+            thousandsSeparator: this.thousandsSeparator,
+            radix: this.radix,
+            mapToRadix: this.mapToRadix,
         };
     }
 
