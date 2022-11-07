@@ -34,7 +34,7 @@ class PlInputMask extends PlElement {
     }
 
     inputValChanged(val) {
-        if(!val.detail.value) {
+        if(this.type != 'number') {
             this._imask.updateValue();
         }
         this._imask.updateControl();
@@ -92,6 +92,8 @@ class PlInputMask extends PlElement {
             thousandsSeparator: this.thousandsSeparator,
             radix: this.radix,
             mapToRadix: this.mapToRadix,
+            min: this.min,
+            max: this.max
         };
     }
 
