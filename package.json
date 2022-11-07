@@ -1,6 +1,6 @@
 {
     "name": "@plcmp/pl-input-mask",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "Simple mask for inputs.",
     "main": "pl-input-mask.js",
     "repository": {
@@ -23,7 +23,7 @@
         }
     ],
     "dependencies": {
-        "polylib": "^1.0.0",
+        "polylib": "^1.1.8",
         "imask": "^6.1.0"
     }
 }
