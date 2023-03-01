@@ -123,7 +123,7 @@ class PlInputMask extends PlElement {
             YYYY: {
                 mask: IMask.MaskedRange,
                 from: this.minYear ?? 1000,
-                to: this.maxYear ?? 3000,
+                to: this.maxYear ?? 9999,
                 maxLength: 4
             },
             HH: {
